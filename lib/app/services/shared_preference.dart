@@ -1,14 +1,15 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefService {
-  static final SharedPrefService _instance = SharedPrefService._init();
-  factory SharedPrefService() => _instance;
+  final SharedPreferences prefs;
 
-  SharedPrefService._init();
+  SharedPrefService(this.prefs);
 
-  late SharedPreferences _prefs;
-
-  Future<void> initialize() async {
-    _prefs = await SharedPreferences.getInstance();
+  Future<void> saveJoke(String id) async {
+    final list = getJokeIds();
+    list.add(id);
+    prefs.setStringList("jokes", list.toSet().toList());
   }
+
+  List<String> getJokeIds() => prefs.getStringList("jokes") ?? [];
 }

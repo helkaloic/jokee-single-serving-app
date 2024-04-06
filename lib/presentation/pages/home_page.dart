@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jokee_single_serving/app/constants/app_const.dart';
 import 'package:jokee_single_serving/app/extensions/build_context.dart';
+import 'package:jokee_single_serving/app/extensions/list.dart';
 import 'package:jokee_single_serving/app/theme/colors.dart';
 import 'package:jokee_single_serving/app/theme/text_style.dart';
+import 'package:jokee_single_serving/presentation/cubit/joke_cubit.dart';
 import 'package:jokee_single_serving/presentation/widgets/button.dart';
+import 'package:jokee_single_serving/presentation/widgets/loading.dart';
 
 import '../../app/constants/gen/assets.gen.dart';
 
@@ -27,9 +31,11 @@ class HomePage extends StatelessWidget {
 }
 
 class _HomePageBody extends StatelessWidget {
-  Future<void> _onFunnyTap(String id) async {}
-
-  Future<void> _onNotFunnyTap(String id) async {}
+  Future<void> _onButtonTap(String id, BuildContext context) async {
+    if (id.isNotEmpty) {
+      await context.read<JokeCubit>().markJoke(id);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,34 +47,59 @@ class _HomePageBody extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: 30.w, vertical: context.orientation(50, 20).h),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final text = SelectableText(
-                          r'A child asked his father, "How were people born?" So his father said, "Adam and Eve made babies, then their babies became adults and made babies, and so on." The child then went to his mother, asked her the same question and she told him, "We were monkeys then we evolved to become like we are now." The child ran back to his father and said, "You lied to me!" His father replied, "No, your mom was talking about her side of the family."',
+              child: BlocBuilder<JokeCubit, JokeState>(
+                builder: (context, state) {
+                  final content = switch (state.status) {
+                    JokeStatus.empty => Center(
+                        child: Text(
+                          AppConst.noJokes,
                           style: context.textStyle.bodyS.grey600,
-                        );
-                        if (constraints.maxHeight >
-                            context.screenHeight * 0.5) {
-                          return SingleChildScrollView(
-                            child: text,
-                          );
-                        } else {
-                          return text;
-                        }
-                      },
-                    ),
-                  ),
-                  // Container(
-                  //   height: 1.h,
-                  //   color: context.colors.divider,
-                  // ),
-                  SizedBox(height: 20.h),
-                  _buildButtons(context, "")
-                ],
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    JokeStatus.loading =>
+                      const Center(child: LoadingIndicator()),
+                    JokeStatus.error =>
+                      Center(child: Text(state.message ?? '')),
+                    JokeStatus.loaded => Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            child: LayoutBuilder(
+                              builder: (context, constraints) {
+                                final text = SelectableText(
+                                  state.list.isNotNullOrEmpty
+                                      ? state.list?.first.content ?? ''
+                                      : '',
+                                  style: context.textStyle.bodyS.grey600,
+                                );
+                                if (constraints.maxHeight >
+                                    context.screenHeight * 0.5) {
+                                  return SingleChildScrollView(
+                                    child: text,
+                                  );
+                                } else {
+                                  return text;
+                                }
+                              },
+                            ),
+                          ),
+                          // Container(
+                          //   height: 1.h,
+                          //   color: context.colors.divider,
+                          // ),
+                          SizedBox(height: 20.h),
+                          _buildButtons(
+                              context,
+                              state.list.isNotNullOrEmpty
+                                  ? state.list?.first.id ?? ''
+                                  : ''),
+                        ],
+                      ),
+                  };
+
+                  return content;
+                },
               ),
             ),
           ),
@@ -106,11 +137,11 @@ class _HomePageBody extends StatelessWidget {
   Widget _buildButtons(BuildContext context, String id) {
     final widgets = [
       TextButtonCustom(
-        onTap: () => _onFunnyTap(id),
+        onTap: () => _onButtonTap(id, context),
         text: AppConst.funnyText,
       ),
       TextButtonCustom(
-        onTap: () => _onNotFunnyTap(id),
+        onTap: () => _onButtonTap(id, context),
         text: AppConst.notFunnyText,
         color: context.colors.green,
       ),

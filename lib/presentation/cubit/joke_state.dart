@@ -5,22 +5,26 @@ enum JokeStatus { empty, loading, loaded, error }
 
 class JokeState extends Equatable {
   final JokeStatus status;
-  final JokeModel? model;
+  final List<JokeModel>? list;
   final String? message;
 
-  const JokeState({required this.status, this.model, this.message});
+  const JokeState({
+    required this.status,
+    this.list,
+    this.message,
+  });
 
   @override
-  List<Object?> get props => [status, model, message];
+  List<Object?> get props => [status, list, message];
 
   JokeState copyWith({
     JokeStatus? status,
-    JokeModel? model,
+    List<JokeModel>? list,
     String? message,
   }) {
     return JokeState(
       status: status ?? this.status,
-      model: model ?? this.model,
+      list: list ?? this.list,
       message: message ?? this.message,
     );
   }

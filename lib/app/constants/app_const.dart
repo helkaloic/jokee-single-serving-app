@@ -5,6 +5,8 @@ class AppConst {
   static const bannerTitle = "A joke a day keeps the doctor away";
   static const bannerSubTitle =
       "If you joke wrong way, your teeth have to pay. (Serious)";
+  static const noJokes =
+      "That's all the jokes for today! Come back another day!";
   static const funnyText = "This is Funny!";
   static const notFunnyText = "This is not funny.";
   static const copyRight = "Copyright 2021 HLS";

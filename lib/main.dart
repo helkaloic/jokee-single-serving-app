@@ -2,13 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:jokee_single_serving/app/services/shared_preference.dart';
+import 'package:jokee_single_serving/bloc_provider_scope.dart';
 import 'package:jokee_single_serving/presentation/pages/home_page.dart';
+
+import 'injection_container.dart' as di;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SharedPrefService().initialize();
-  runApp(const MyApp());
+  await di.setUpServiceLocator();
+  runApp(const BlocProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

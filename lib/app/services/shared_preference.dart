@@ -12,4 +12,6 @@ class SharedPrefService {
   }
 
   List<String> getJokeIds() => prefs.getStringList("jokes") ?? [];
+
+  void clearAllJokes() => prefs.remove("jokes");
 }

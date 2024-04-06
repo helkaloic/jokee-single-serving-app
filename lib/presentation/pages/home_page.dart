@@ -26,6 +26,7 @@ class HomePage extends StatelessWidget {
           _HomePageBody(),
         ],
       ),
+      endDrawer: _HomePageDrawer(),
     );
   }
 }
@@ -213,32 +214,35 @@ class _HomePageAppBar extends StatelessWidget {
   }
 
   Widget _buildListTileInfo(BuildContext context) {
-    return Row(
-      children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              AppConst.handicraftedBy,
-              style: context.textStyle.labelM.grey,
-            ),
-            Text(
-              AppConst.handicraftedByAuthor,
-              style: context.textStyle.labelM,
-            ),
-          ],
-        ),
-        SizedBox(width: 8.w),
-        ClipOval(
-          child: Image.asset(
-            Assets.image.sunflower.path,
-            height: 40.r,
-            width: 40.r,
-            fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () => Scaffold.of(context).openEndDrawer(),
+      child: Row(
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                AppConst.handicraftedBy,
+                style: context.textStyle.labelM.grey,
+              ),
+              Text(
+                AppConst.handicraftedByAuthor,
+                style: context.textStyle.labelM,
+              ),
+            ],
           ),
-        ),
-      ],
+          SizedBox(width: 8.w),
+          ClipOval(
+            child: Image.asset(
+              Assets.image.sunflower.path,
+              height: 40.r,
+              width: 40.r,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -248,6 +252,34 @@ class _HomePageAppBar extends StatelessWidget {
       fit: BoxFit.cover,
       height: 40.r,
       width: 40.r,
+    );
+  }
+}
+
+class _HomePageDrawer extends StatelessWidget {
+  Future<void> _clearAllSavedJokes(BuildContext context) async {
+    Scaffold.of(context).closeEndDrawer();
+    await context.read<JokeCubit>().clearAllSavedJokes();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      shape: const RoundedRectangleBorder(),
+      child: ListView(
+        children: [
+          InkWell(
+            onTap: () => _clearAllSavedJokes(context),
+            child: ListTile(
+              title: Text(
+                AppConst.clearAll,
+                style: context.textStyle.bodyM,
+              ),
+              trailing: Icon(Icons.arrow_forward_ios_rounded, size: 16.r),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

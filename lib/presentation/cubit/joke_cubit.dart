@@ -43,4 +43,10 @@ class JokeCubit extends Cubit<JokeState> {
       },
     );
   }
+
+  Future<void> clearAllSavedJokes() async {
+    emit(state.copyWith(status: JokeStatus.loading));
+    prefs.clearAllJokes();
+    await getAllJokes();
+  }
 }

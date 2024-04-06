@@ -1,5 +1,6 @@
 class AppConst {
   AppConst._();
+  static const clearAll = "Clear all saved jokes";
   static const handicraftedBy = "Handicrafted by";
   static const handicraftedByAuthor = "Jim HLS";
   static const bannerTitle = "A joke a day keeps the doctor away";

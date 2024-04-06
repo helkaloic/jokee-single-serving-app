@@ -1,16 +1,21 @@
-# jokee_single_serving
+# Jokee Single Serving APP
 
-A new Flutter project.
+This app will display a single joke for the user to read.
 
-## Getting Started
+## Download
 
-This project is a starting point for a Flutter application.
+App profile APK: [Download](https://github.com/helkaloic/jokee-single-serving-app/releases/latest)
 
-A few resources to get you started if this is your first Flutter project:
+## Quick notes
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Implemented fully designed.
+- The app is mobile responsive.
+- Jokes are displayed.
+- The app has an additional function to clear all saved jokes.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## UI
+
+| Screenshot  | GIF |
+| ------------- | ------------- |
+|  ![Screenshot_20240406-131239_Jokee](https://github.com/helkaloic/jokee-single-serving-app/assets/59311731/5fdb96c0-71b8-4b4e-afc9-aa87aac0b4ae) | ![video_2024-04-06_13-05-58-Trim-ezgif com-video-to-gif-converter](https://github.com/helkaloic/jokee-single-serving-app/assets/59311731/7a645cec-ed40-45df-96b6-8812741c2d94)  |
+
